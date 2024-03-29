@@ -1,8 +1,8 @@
 # Roadmap
 
-- [ ] Overview Documentation
+- [x] Overview Documentation
   - [x] README
-  - [ ] Diagram
+  - [x] Diagram
 - [ ] Setup
   - [ ] Kafka
   - [ ] Spark

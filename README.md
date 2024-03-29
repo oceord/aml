@@ -1,13 +1,13 @@
 # Real-Time Ingestion and Analysis of Financial Transactions
 
-## Overview
-
 This project aims to build a comprehensive data pipeline for real-time ingestion and analysis of financial transactions, focusing on expanding knowledge in Kafka, Hadoop, Great Expectations, Spark, and Machine Learning.
 The pipeline will ingest data from a Kaggle dataset, process it through a series of technologies, and output the results to a PostgreSQL data warehouse, Hadoop for raw and formatted data storage, and apply machine learning models for money laundering detection.
 
-[ROADMAP](ROADMAP.md)
+A roadmap is available [here](ROADMAP.md).
 
-## Project Components
+## Overview
+
+![overview.png](assets/overview.png)
 
 ### Data Source
 
