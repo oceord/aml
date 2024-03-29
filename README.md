@@ -16,25 +16,22 @@ A roadmap is available [here](ROADMAP.md).
 
 ### Data Feed
 
-- **Kafka**: Used for real-time data streaming.
+- **Kafka**: used for real-time data streaming.
 
 ### Data Ingestion
 
-- **Spark**: Utilized for processing and analyzing the data in real-time.
+- **Spark**: used for processing and analyzing data in real-time.
 
 ### Data Output
 
-- **Hadoop**: Used for storing raw and formatted data.
-- **PostgreSQL**: Serves as the data warehouse for storing processed and analyzed data.
+- **Hadoop**: used for storing raw and formatted data.
+- **PostgreSQL**: serves as data warehouse for storing processed and analyzed data.
 
 ### Data Validation
 
-- **Great Expectations**: Ensures data quality and integrity through automated testing.
+- **Great Expectations**: ensures data quality and integrity through automated testing.
 
-### Money Laundering Detection
+### Machine Learning
 
-- **[IBM/Multi-GNN](https://github.com/IBM/Multi-GNN)**: Machine learning models for detecting patterns indicative of money laundering activities.
-
-## License
-
-This project is licensed under the MIT License. See the LICENSE file for details.
+- **[IBM/Multi-GNN](https://github.com/IBM/Multi-GNN)**: machine learning models for detecting patterns indicative of money laundering activities.
+- **Spark**: playground for all things machine learning.
