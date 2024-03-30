@@ -1,0 +1,17 @@
+services:
+  kafka:
+    profiles: [ "dep" ]
+    container_name: kafka_aml
+    image: apache/kafka:3.7.0
+    network_mode: host
+  data_feed:
+    profiles: [ "aml" ]
+    container_name: aml_data_feed
+    build:
+      context: ./src/data_feed/
+      dockerfile: Dockerfile
+    volumes:
+      - ./data/:/data_feed/data
+    network_mode: host
+    depends_on:
+      - kafka

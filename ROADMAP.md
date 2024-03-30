@@ -4,12 +4,12 @@
   - [x] README
   - [x] Diagram
 - [ ] Setup
-  - [ ] Kafka
+  - [x] Kafka
   - [ ] Spark
   - [ ] Hadoop
   - [ ] PostgreSQL
-- [ ] Kafka feed
-  - [ ] Stream data from the [IBM Transactions for AML](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml) dataset
+- [x] Kafka feed
+  - [x] Stream data from the [IBM Transactions for AML](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml) dataset
 - [ ] Data ingestion through Spark
   - [ ] Extract from Kafka stream
   - [ ] Load raw data to Hadoop
