@@ -1,7 +1,25 @@
 {
-    "cSpell.words": [
-        "HDFS",
-        "Kaggle",
-        "Multigraphs"
-    ]
+    /* Editor and Explorer **/
+    "explorer.excludeGitIgnore": true,
+    /** On Save **/
+    "editor.formatOnSave": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    /* Extensions **/
+    "markdownlint.run": "onSave",
+    "mypy-type-checker.args": [
+        "--ignore-missing-imports",
+        "--show-column-numbers",
+        "--config-file=pyproject.toml"
+    ],
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+    "ruff.lint.args": [],
+    /* Editor settings for Python **/
+    "[python]": {
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    }
 }

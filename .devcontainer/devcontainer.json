@@ -1,0 +1,65 @@
+// JSON specification: https://aka.ms/devcontainer.json
+// Image template used: https://github.com/devcontainers/templates/tree/main/src/debian
+// "Using Images, Dockerfiles, and Docker Compose" guide: https://containers.dev/guide/dockerfile
+{
+    "name": "aml",
+    "image": "mcr.microsoft.com/devcontainers/base:debian",
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {
+            "installZsh": "true",
+            "configureZshAsDefaultShell": "true",
+            "installOhMyZsh": "true",
+            "upgradePackages": "true",
+            "username": "vscode",
+            "nonFreePackages": "false"
+        },
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "os-provided",
+            "ppa": "false"
+        },
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.11",
+            "installTools": "true",
+            "optimize": "false"
+        }
+    },
+    "mounts": [
+        // Workaround to not mount .venv/ from host system
+        // More info here: https://github.com/microsoft/vscode-remote-release/issues/620
+        // The directory is generated at container creation
+        //  and, therefore, belongs to root
+        //  DEP: "onCreateCommand" changes .venv/ owner to vscode
+        "type=volume,target=${containerWorkspaceFolder}/.venv/"
+    ],
+    "runArgs": [
+        "--network=host"
+    ],
+    "remoteUser": "vscode",
+    "containerEnv": {
+        "LANG": "${localEnv:LANG}",
+        "PIPENV_VENV_IN_PROJECT": "1",
+        "ZSH_CUSTOM": "${localEnv:ZSH_CUSTOM}"
+    },
+    "onCreateCommand": "./.devcontainer/onCreateCommand.sh",
+    "postStartCommand": "./.devcontainer/postStartCommand.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "charliermarsh.ruff",
+                "davidanson.vscode-markdownlint",
+                "foxundermoon.shell-format",
+                "mikestead.dotenv",
+                "ms-azuretools.vscode-docker",
+                "ms-python.black-formatter",
+                "ms-python.mypy-type-checker",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "njpwerner.autodocstring",
+                "streetsidesoftware.code-spell-checker",
+                "tamasfe.even-better-toml",
+                "timonwong.shellcheck",
+                "yzhang.markdown-all-in-one"
+            ]
+        }
+    }
+}

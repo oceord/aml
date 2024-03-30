@@ -1,0 +1,25 @@
+# Ruff user-level configuration
+
+select = ["ALL"]
+ignore = [
+    # Allow public structures without docstrings
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    # Allow implicit namespace packages
+    "INP",
+    # Allow print statements
+    "T20",
+]
+
+[flake8-annotations]
+allow-star-arg-any = true
+ignore-fully-untyped = true
+
+[pydocstyle]
+convention = "google"
