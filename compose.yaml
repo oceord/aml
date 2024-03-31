@@ -1,11 +1,11 @@
 services:
   kafka:
-    profiles: [ "data_feed", "dep" ]
+    profiles: [ "data_feed_dep", "dep" ]
     container_name: kafka_aml
     image: apache/kafka:3.7.0
     network_mode: host
   data_feed:
-    profiles: [ "data_feed", "aml" ]
+    profiles: [ "data_feed" ]
     container_name: aml_data_feed
     build:
       context: ./src/data_feed/
