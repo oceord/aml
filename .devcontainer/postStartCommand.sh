@@ -3,4 +3,5 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-make pipenv-dev-install
+pipenv run pip install --upgrade pip
+pipenv install --dev --ignore-pipfile --deploy
