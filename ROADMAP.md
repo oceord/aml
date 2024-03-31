@@ -5,9 +5,9 @@
   - [x] Diagram
 - [ ] Setup
   - [x] Kafka
-  - [ ] Spark
   - [ ] Hadoop
   - [ ] PostgreSQL
+  - [ ] Spark
 - [x] Kafka feed
   - [x] Stream data from the [IBM Transactions for AML](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml) dataset
 - [ ] Data ingestion through Spark
@@ -20,3 +20,7 @@
   - [ ] [Provably Powerful Graph Neural Networks for Directed Multigraphs](https://arxiv.org/pdf/2306.11586.pdf)
   - [ ] Detect money laundering through [Multi-GNN](https://github.com/IBM/Multi-GNN)
 - [ ] Real-time money laundering detection
+
+- Playground
+  - [ ] Use a Spark cluster to process data
+  - [ ] Apply MapReduce with Hadoop
