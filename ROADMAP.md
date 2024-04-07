@@ -5,7 +5,7 @@
   - [x] Diagram
 - [ ] Setup
   - [x] Kafka
-  - [ ] Hadoop
+  - [x] Hadoop
   - [ ] PostgreSQL
   - [ ] Spark
 - [x] Kafka feed

@@ -1,4 +1,6 @@
+version: "2"
 services:
+
   kafka:
     profiles: [ "data_feed_dep", "dep" ]
     container_name: kafka_aml
@@ -15,3 +17,36 @@ services:
     network_mode: host
     depends_on:
       - kafka
+
+  namenode:
+    profiles: [ "hadoop_cluster", "dep" ]
+    image: apache/hadoop:3
+    network_mode: host
+    command: [ "hdfs", "namenode" ]
+    env_file:
+      - ./configs/hadoop-config.env
+    environment:
+      ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+  datanode:
+    profiles: [ "hadoop_cluster", "dep" ]
+    image: apache/hadoop:3
+    network_mode: host
+    command: [ "hdfs", "datanode" ]
+    env_file:
+      - ./configs/hadoop-config.env
+  resourcemanager:
+    profiles: [ "hadoop_cluster", "dep" ]
+    image: apache/hadoop:3
+    network_mode: host
+    command: [ "yarn", "resourcemanager" ]
+    env_file:
+      - ./configs/hadoop-config.env
+    volumes:
+      - ./test.sh:/opt/test.sh
+  nodemanager:
+    profiles: [ "hadoop_cluster", "dep" ]
+    image: apache/hadoop:3
+    network_mode: host
+    command: [ "yarn", "nodemanager" ]
+    env_file:
+      - ./configs/hadoop-config.env
