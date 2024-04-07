@@ -56,7 +56,7 @@ dcomp-up-data-feed: ## Start the data_feed service
 ####### COMMANDS - UTILITIES #######################################################################
 
 kafka-create-topic: ## Create a "financial-transaction" topic directly in Kafka service
-	@docker exec kafka_aml \
+	@docker exec aml_kafka \
 		/opt/kafka/bin/kafka-topics.sh \
 		--bootstrap-server localhost:9092 \
 		--create --topic financial-transaction \
@@ -64,13 +64,13 @@ kafka-create-topic: ## Create a "financial-transaction" topic directly in Kafka 
 		--replication-factor 1
 
 kafka-list-all-topics: ## List all created topics in Kafka service
-	@docker exec kafka_aml \
+	@docker exec aml_kafka \
 		/opt/kafka/bin/kafka-topics.sh \
 		--bootstrap-server localhost:9092 \
 		--list
 
 kafka-list-topic-msgs: ## List all messages broadcasted to "financial-transaction" topic in Kafka service
-	@docker exec kafka_aml \
+	@docker exec aml_kafka \
 		/opt/kafka/bin/kafka-console-consumer.sh \
 		--bootstrap-server localhost:9092 \
 		--topic financial-transaction \
@@ -78,7 +78,7 @@ kafka-list-topic-msgs: ## List all messages broadcasted to "financial-transactio
 
 kafka-send-topic-msg: ## Send a message to "financial-transaction" topic directly in Kafka service
 	@echo "foo" |
-		docker exec -i kafka_aml \
+		docker exec -i aml_kafka \
 			/opt/kafka/bin/kafka-console-producer.sh \
 			--broker-list localhost:9092 \
 			--topic financial-transaction \

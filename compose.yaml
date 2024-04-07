@@ -3,7 +3,7 @@ services:
 
   kafka:
     profiles: [ "data_feed_dep", "dep" ]
-    container_name: kafka_aml
+    container_name: aml_kafka
     image: apache/kafka:3.7.0
     network_mode: host
   data_feed:
@@ -18,8 +18,9 @@ services:
     depends_on:
       - kafka
 
-  namenode:
+  hadoop_namenode:
     profiles: [ "hadoop_cluster", "dep" ]
+    container_name: aml_hadoop_namenode
     image: apache/hadoop:3
     network_mode: host
     command: [ "hdfs", "namenode" ]
@@ -27,15 +28,17 @@ services:
       - ./configs/hadoop-config.env
     environment:
       ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
-  datanode:
+  hadoop_datanode:
     profiles: [ "hadoop_cluster", "dep" ]
+    container_name: aml_hadoop_datanode
     image: apache/hadoop:3
     network_mode: host
     command: [ "hdfs", "datanode" ]
     env_file:
       - ./configs/hadoop-config.env
-  resourcemanager:
+  hadoop_resourcemanager:
     profiles: [ "hadoop_cluster", "dep" ]
+    container_name: aml_hadoop_resourcemanager
     image: apache/hadoop:3
     network_mode: host
     command: [ "yarn", "resourcemanager" ]
@@ -43,8 +46,9 @@ services:
       - ./configs/hadoop-config.env
     volumes:
       - ./test.sh:/opt/test.sh
-  nodemanager:
+  hadoop_nodemanager:
     profiles: [ "hadoop_cluster", "dep" ]
+    container_name: aml_hadoop_nodemanager
     image: apache/hadoop:3
     network_mode: host
     command: [ "yarn", "nodemanager" ]
