@@ -269,7 +269,7 @@ $RECYCLE.BIN/
 
 .devcontainer/
 .vscode/
-assets/
+docs/
 data/
 scripts/
 

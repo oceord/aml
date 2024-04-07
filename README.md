@@ -7,7 +7,7 @@ A roadmap is available [here](ROADMAP.md).
 
 ## Overview
 
-![overview.png](assets/overview.png)
+![overview.png](docs/overview.png)
 
 ### Data Source
 
