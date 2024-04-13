@@ -1,6 +1,6 @@
 # Makefile to gather common commands
 
-.PHONY: clean dcomp-up dcomp-up-data-feed dcomp-up-data-output dcomp-up-db dcomp-up-deps dcomp-up-hadoop-cluster kafka-create-topic kafka-list-all-topics kafka-list-topic-msgs kafka-send-topic-msg pipenv-dev-install
+.PHONY: clean dcomp-up-data-feed dcomp-up-data-output d-down kafka-create-topic kafka-list-all-topics kafka-list-topic-msgs kafka-send-topic-msg pipenv-dev-install
 .DEFAULT_GOAL := help
 
 # Project variables
@@ -44,23 +44,17 @@ pipenv-dev-install: ## Create dev venv
 
 ####### COMMANDS - MAIN #######################################################################
 
-dcomp-up: ## Build, recreate, and start all services
-	@docker-compose --profile data_feed up -d --force-recreate --build
+dcomp-up-deps: ## Start all dependencie services
+	@docker-compose -p dep up -d --force-recreate --build
 
-dcomp-up-deps: ## Start all dependency services
-	@docker-compose --profile dep up -d
+dcomp-up-data-feed: ## Start the data_feed service
+	@docker-compose -p data_feed up -d --force-recreate --build
 
-dcomp-up-data-feed: ## Start the data_feed profile
-	@docker-compose --profile data_feed up -d
+dcomp-up-data-output: ## Start the data_output services
+	@docker-compose -p data_output up -d
 
-dcomp-up-data-output: ## Start the data_output profile
-	@docker-compose --profile data_output up -d
-
-dcomp-up-hadoop-cluster: ## Start the hadoop_cluster profile
-	@docker-compose --profile hadoop_cluster up -d
-
-dcomp-up-db: ## Start the db profile
-	@docker-compose --profile db up -d
+d-down: ## Stop all services
+	@ddocker-compose stop -t 0
 
 ####### COMMANDS - UTILITIES #######################################################################
 

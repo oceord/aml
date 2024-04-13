@@ -1,25 +1,34 @@
-version: "2"
+version: "3"
 services:
 
   kafka:
-    profiles: [ "data_feed_dep", "dep" ]
+    profiles: [ "data_feed", "data_feed_dep", "dep", all ]
     container_name: aml_kafka
     image: apache/kafka:3.7.0
     network_mode: host
+    healthcheck:
+      test: /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list || exit 1
+      start_period: 10s
+      interval: 10s
+      timeout: 10s
+      retries: 3
   data_feed:
-    profiles: [ "data_feed", "dep" ]
+    profiles: [ "data_feed", "dep", all ]
     container_name: aml_data_feed
     build:
       context: ./src/data_feed/
       dockerfile: Dockerfile
     volumes:
-      - ./data/:/data_feed/data
+      - ./data/work:/data_feed/data
+    env_file:
+      - ./configs/data_feed-config.env
     network_mode: host
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
 
   hadoop_namenode:
-    profiles: [ "data_output", "hadoop_cluster", "dep" ]
+    profiles: [ "data_output", "dep", all ]
     container_name: aml_hadoop_namenode
     image: apache/hadoop:3
     network_mode: host
@@ -29,7 +38,7 @@ services:
     environment:
       ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
   hadoop_datanode:
-    profiles: [ "data_output", "hadoop_cluster", "dep" ]
+    profiles: [ "data_output", "dep", all ]
     container_name: aml_hadoop_datanode
     image: apache/hadoop:3
     network_mode: host
@@ -37,17 +46,15 @@ services:
     env_file:
       - ./configs/hadoop-config.env
   hadoop_resourcemanager:
-    profiles: [ "data_output", "hadoop_cluster", "dep" ]
+    profiles: [ "data_output", "dep", all ]
     container_name: aml_hadoop_resourcemanager
     image: apache/hadoop:3
     network_mode: host
     command: [ "yarn", "resourcemanager" ]
     env_file:
       - ./configs/hadoop-config.env
-    volumes:
-      - ./test.sh:/opt/test.sh
   hadoop_nodemanager:
-    profiles: [ "data_output", "hadoop_cluster", "dep" ]
+    profiles: [ "data_output", "dep", all ]
     container_name: aml_hadoop_nodemanager
     image: apache/hadoop:3
     network_mode: host
@@ -56,7 +63,8 @@ services:
       - ./configs/hadoop-config.env
 
   db:
-    profiles: [ "data_output", "db", "dep" ]
+    profiles: [ "data_output", "dep", all ]
+    container_name: aml_db
     image: postgres
     network_mode: host
     restart: always
@@ -66,6 +74,8 @@ services:
     depends_on:
       - db_adminer
   db_adminer:
+    profiles: [ "data_output", "dep", all ]
+    container_name: aml_db_adminer
     image: adminer
     network_mode: host
     restart: always

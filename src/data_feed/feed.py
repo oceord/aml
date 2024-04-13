@@ -1,15 +1,17 @@
 import csv
 import json
+import os
 from pathlib import Path
 from time import sleep
 
 from kafka import KafkaProducer
 
-TOPIC = "financial-transaction"
-KAFKA_SERVER = "localhost:9092"
 SCRIPT_DIR = Path(__file__).parent
-DATA_DIR = SCRIPT_DIR / "data" / "work"
-SEC_BETWEEN_MSGS = 5
+
+KAFKA_SERVER = os.environ.get("KAFKA_SERVER", "localhost:9092")
+DATA_DIR = Path(os.environ.get("DATA_DIR", SCRIPT_DIR.parent.parent / "data" / "work"))
+TOPIC = os.environ.get("TOPIC", "financial-transaction")
+SEC_BETWEEN_MSGS = int(os.environ.get("SEC_BETWEEN_MSGS", 0))
 
 
 def produce_events():
@@ -26,7 +28,8 @@ def produce_events():
 def produce_event(producer, row):
     producer.send(topic=TOPIC, value=row)
     producer.flush()
-    sleep(SEC_BETWEEN_MSGS)
+    if SEC_BETWEEN_MSGS:
+        sleep(SEC_BETWEEN_MSGS)
 
 
 def get_csv_file():
