@@ -1,6 +1,6 @@
 # Makefile to gather common commands
 
-.PHONY: clean dcomp-up-data-feed dcomp-up-data-output d-down kafka-create-topic kafka-list-all-topics kafka-list-topic-msgs kafka-send-topic-msg pipenv-dev-install
+.PHONY: clean dcomp-down dcomp-up-data-feed dcomp-up-data-output kafka-create-topic kafka-list-all-topics kafka-list-topic-msgs kafka-send-topic-msg pipenv-dev-install
 .DEFAULT_GOAL := help
 
 # Project variables
@@ -53,8 +53,8 @@ dcomp-up-data-feed: ## Start the data_feed service
 dcomp-up-data-output: ## Start the data_output services
 	@docker-compose -p data_output up -d
 
-d-down: ## Stop all services
-	@ddocker-compose stop -t 0
+dcomp-down: ## Stop all services
+	@docker-compose stop -t 0
 
 ####### COMMANDS - UTILITIES #######################################################################
 
