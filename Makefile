@@ -1,6 +1,6 @@
 # Makefile to gather common commands
 
-.PHONY: clean dcomp-up dcomp-up-data-feed dcomp-up-deps format help kafka_create_topic kafka_list_all_topics kafka_list_topic_msgs kafka_send_topic_msg lint pipenv-dev-install
+.PHONY: clean dcomp-up dcomp-up-data-feed dcomp-up-data-output dcomp-up-db dcomp-up-deps dcomp-up-hadoop-cluster kafka-create-topic kafka-list-all-topics kafka-list-topic-msgs kafka-send-topic-msg pipenv-dev-install
 .DEFAULT_GOAL := help
 
 # Project variables
@@ -50,8 +50,17 @@ dcomp-up: ## Build, recreate, and start all services
 dcomp-up-deps: ## Start all dependency services
 	@docker-compose --profile dep up -d
 
-dcomp-up-data-feed: ## Start the data_feed service
+dcomp-up-data-feed: ## Start the data_feed profile
 	@docker-compose --profile data_feed up -d
+
+dcomp-up-data-output: ## Start the data_output profile
+	@docker-compose --profile data_output up -d
+
+dcomp-up-hadoop-cluster: ## Start the hadoop_cluster profile
+	@docker-compose --profile hadoop_cluster up -d
+
+dcomp-up-db: ## Start the db profile
+	@docker-compose --profile db up -d
 
 ####### COMMANDS - UTILITIES #######################################################################
 

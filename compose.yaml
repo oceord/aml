@@ -7,7 +7,7 @@ services:
     image: apache/kafka:3.7.0
     network_mode: host
   data_feed:
-    profiles: [ "data_feed" ]
+    profiles: [ "data_feed", "dep" ]
     container_name: aml_data_feed
     build:
       context: ./src/data_feed/
@@ -19,7 +19,7 @@ services:
       - kafka
 
   hadoop_namenode:
-    profiles: [ "hadoop_cluster", "dep" ]
+    profiles: [ "data_output", "hadoop_cluster", "dep" ]
     container_name: aml_hadoop_namenode
     image: apache/hadoop:3
     network_mode: host
@@ -29,7 +29,7 @@ services:
     environment:
       ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
   hadoop_datanode:
-    profiles: [ "hadoop_cluster", "dep" ]
+    profiles: [ "data_output", "hadoop_cluster", "dep" ]
     container_name: aml_hadoop_datanode
     image: apache/hadoop:3
     network_mode: host
@@ -37,7 +37,7 @@ services:
     env_file:
       - ./configs/hadoop-config.env
   hadoop_resourcemanager:
-    profiles: [ "hadoop_cluster", "dep" ]
+    profiles: [ "data_output", "hadoop_cluster", "dep" ]
     container_name: aml_hadoop_resourcemanager
     image: apache/hadoop:3
     network_mode: host
@@ -47,10 +47,25 @@ services:
     volumes:
       - ./test.sh:/opt/test.sh
   hadoop_nodemanager:
-    profiles: [ "hadoop_cluster", "dep" ]
+    profiles: [ "data_output", "hadoop_cluster", "dep" ]
     container_name: aml_hadoop_nodemanager
     image: apache/hadoop:3
     network_mode: host
     command: [ "yarn", "nodemanager" ]
     env_file:
       - ./configs/hadoop-config.env
+
+  db:
+    profiles: [ "data_output", "db", "dep" ]
+    image: postgres
+    network_mode: host
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: foo
+    depends_on:
+      - db_adminer
+  db_adminer:
+    image: adminer
+    network_mode: host
+    restart: always

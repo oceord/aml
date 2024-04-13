@@ -6,7 +6,7 @@
 - [ ] Setup
   - [x] Kafka
   - [x] Hadoop
-  - [ ] PostgreSQL
+  - [x] PostgreSQL
   - [ ] Spark
 - [x] Kafka feed
   - [x] Stream data from the [IBM Transactions for AML](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml) dataset
