@@ -11,8 +11,8 @@
 - [x] Kafka feed
   - [x] Stream data from the [IBM Transactions for AML](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml) dataset
 - [ ] Data ingestion through Spark
-  - [ ] Extract from Kafka stream
-  - [ ] Load raw data to Hadoop
+  - [x] Extract from Kafka stream
+  - [x] Load raw data to Hadoop
   - [ ] Transform and Load Fact and Dimension tables to PostgreSQL
   - [ ] Validate data with Great Expectations
 - [ ] Money laundering detection
