@@ -21,7 +21,8 @@
             "version": "3.11",
             "installTools": "true",
             "optimize": "false"
-        }
+        },
+        "ghcr.io/devcontainers/features/java:1": {}
     },
     "mounts": [
         // Workaround to not mount .venv/ from host system

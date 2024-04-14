@@ -15,6 +15,10 @@ ignore = [
     "INP",
     # Allow print statements
     "T20",
+    # Allow positional booleans
+    "FBT003",
+    # Allow commented code
+    "ERA001",
 ]
 
 [flake8-annotations]

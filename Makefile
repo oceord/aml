@@ -1,6 +1,6 @@
 # Makefile to gather common commands
 
-.PHONY: clean dcomp-down dcomp-up-data-feed dcomp-up-data-output dcomp-up-deps kafka-create-topic kafka-list-all-topics kafka-list-topic-msgs kafka-send-topic-msg pipenv-dev-install
+.PHONY: clean dcomp-down dcomp-up-data-feed dcomp-up-data-output dcomp-up-deps d-exec-modify-hdfs-permissions hdfs-cat-raw-json hdfs-ls-raw-json hdfs-rm-aml kafka-create-topic kafka-list-all-topics kafka-list-topic-msgs kafka-send-topic-msg pipenv-dev-install
 .DEFAULT_GOAL := help
 
 help: # Show this help menu
@@ -35,12 +35,17 @@ pipenv-dev-install: ## Create dev venv
 
 dcomp-up-deps: ## Start all dependency services
 	@docker-compose --profile dep up -d --force-recreate --build
+	@make d-exec-modify-hdfs-permissions
 
 dcomp-up-data-feed: ## Start the data_feed service
 	@docker-compose --profile data_feed up -d --force-recreate --build
 
 dcomp-up-data-output: ## Start data_output services
 	@docker-compose --profile data_output up -d
+	@make d-exec-modify-hdfs-permissions
+
+d-fix-hdfs-permissions: ## Change permission of HDFS to allow anyone to write to it
+	@docker exec aml_hadoop_namenode hadoop fs -chmod -R 777 /
 
 dcomp-down: ## Stop all services
 	@docker-compose stop -t 0
@@ -75,3 +80,14 @@ kafka-send-topic-msg: ## Send a message to "financial-transaction" topic directl
 			--broker-list localhost:9092 \
 			--topic financial-transaction \
 			-
+
+hdfs-ls-raw-json: ## List files in hdfs://localhost/aml/raw/events/json
+	@docker exec aml_hadoop_datanode hdfs dfs -ls /aml/raw/events/json
+
+hdfs-cat-raw-json: ## Cat json files in hdfs://localhost/aml/raw/events/json
+	@docker exec aml_hadoop_datanode \
+		hdfs dfs -cat \
+		$$(docker exec aml_hadoop_datanode hdfs dfs -ls /aml/raw/events/json | grep '\.json$$' | awk '{print $$8}')
+
+hdfs-rm-aml: ## Remote hdfs://localhost/aml directory
+	@hdfs dfs -rm -r -f /aml

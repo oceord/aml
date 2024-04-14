@@ -21,5 +21,11 @@
             "source.organizeImports": "explicit"
         },
         "editor.defaultFormatter": "ms-python.black-formatter"
-    }
+    },
+    "cSpell.words": [
+        "CHECKP",
+        "dataframe",
+        "hdfs",
+        "pyspark"
+    ]
 }
