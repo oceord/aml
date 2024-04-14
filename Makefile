@@ -35,14 +35,14 @@ pipenv-dev-install: ## Create dev venv
 
 dcomp-up-deps: ## Start all dependency services
 	@docker-compose --profile dep up -d --force-recreate --build
-	@make d-exec-modify-hdfs-permissions
+	@make d-fix-hdfs-permissions
 
 dcomp-up-data-feed: ## Start the data_feed service
 	@docker-compose --profile data_feed up -d --force-recreate --build
 
 dcomp-up-data-output: ## Start data_output services
 	@docker-compose --profile data_output up -d
-	@make d-exec-modify-hdfs-permissions
+	@make d-fix-hdfs-permissions
 
 d-fix-hdfs-permissions: ## Change permission of HDFS to allow anyone to write to it
 	@docker exec aml_hadoop_namenode hadoop fs -chmod -R 777 /
