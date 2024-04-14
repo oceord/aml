@@ -1,18 +1,7 @@
 # Makefile to gather common commands
 
-.PHONY: clean dcomp-down dcomp-up-data-feed dcomp-up-data-output kafka-create-topic kafka-list-all-topics kafka-list-topic-msgs kafka-send-topic-msg pipenv-dev-install
+.PHONY: clean dcomp-down dcomp-up-data-feed dcomp-up-data-output dcomp-up-deps kafka-create-topic kafka-list-all-topics kafka-list-topic-msgs kafka-send-topic-msg pipenv-dev-install
 .DEFAULT_GOAL := help
-
-# Project variables
-MODULE:=mypackage
-SRC:=src/$(MODULE)
-
-# Command overrides
-# In docker-related commands, provide DOCKER=podman to use podman instead of docker
-DOCKER:=docker
-
-# Fetch from git tags the current dev version string, if not found use seconds since epoch
-TAG := $(shell git describe --tags --always --dirty --broken 2>/dev/null || date +%s)
 
 help: # Show this help menu
 	$(info Available make commands:)
@@ -44,14 +33,14 @@ pipenv-dev-install: ## Create dev venv
 
 ####### COMMANDS - MAIN #######################################################################
 
-dcomp-up-deps: ## Start all dependencie services
-	@docker-compose -p dep up -d --force-recreate --build
+dcomp-up-deps: ## Start all dependency services
+	@docker-compose --profile dep up -d --force-recreate --build
 
 dcomp-up-data-feed: ## Start the data_feed service
-	@docker-compose -p data_feed up -d --force-recreate --build
+	@docker-compose --profile data_feed up -d --force-recreate --build
 
-dcomp-up-data-output: ## Start the data_output services
-	@docker-compose -p data_output up -d
+dcomp-up-data-output: ## Start data_output services
+	@docker-compose --profile data_output up -d
 
 dcomp-down: ## Stop all services
 	@docker-compose stop -t 0

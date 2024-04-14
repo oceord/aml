@@ -2,7 +2,7 @@ version: "3"
 services:
 
   kafka:
-    profiles: [ "data_feed", "data_feed_dep", "dep", all ]
+    profiles: [ "data_feed", "data_feed_dep", "dep", "all" ]
     container_name: aml_kafka
     image: apache/kafka:3.7.0
     network_mode: host
@@ -13,7 +13,7 @@ services:
       timeout: 10s
       retries: 3
   data_feed:
-    profiles: [ "data_feed", "dep", all ]
+    profiles: [ "data_feed", "dep", "all" ]
     container_name: aml_data_feed
     build:
       context: ./src/data_feed/
@@ -28,7 +28,7 @@ services:
         condition: service_healthy
 
   hadoop_namenode:
-    profiles: [ "data_output", "dep", all ]
+    profiles: [ "data_output", "dep", "all" ]
     container_name: aml_hadoop_namenode
     image: apache/hadoop:3
     network_mode: host
@@ -38,7 +38,7 @@ services:
     environment:
       ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
   hadoop_datanode:
-    profiles: [ "data_output", "dep", all ]
+    profiles: [ "data_output", "dep", "all" ]
     container_name: aml_hadoop_datanode
     image: apache/hadoop:3
     network_mode: host
@@ -46,7 +46,7 @@ services:
     env_file:
       - ./configs/hadoop-config.env
   hadoop_resourcemanager:
-    profiles: [ "data_output", "dep", all ]
+    profiles: [ "data_output", "dep", "all" ]
     container_name: aml_hadoop_resourcemanager
     image: apache/hadoop:3
     network_mode: host
@@ -54,7 +54,7 @@ services:
     env_file:
       - ./configs/hadoop-config.env
   hadoop_nodemanager:
-    profiles: [ "data_output", "dep", all ]
+    profiles: [ "data_output", "dep", "all" ]
     container_name: aml_hadoop_nodemanager
     image: apache/hadoop:3
     network_mode: host
@@ -63,7 +63,7 @@ services:
       - ./configs/hadoop-config.env
 
   db:
-    profiles: [ "data_output", "dep", all ]
+    profiles: [ "data_output", "dep", "all" ]
     container_name: aml_db
     image: postgres
     network_mode: host
@@ -74,7 +74,7 @@ services:
     depends_on:
       - db_adminer
   db_adminer:
-    profiles: [ "data_output", "dep", all ]
+    profiles: [ "data_output", "dep", "all" ]
     container_name: aml_db_adminer
     image: adminer
     network_mode: host
