@@ -20,7 +20,21 @@ def produce_events():
         value_serializer=lambda v: json.dumps(v).encode("utf-8"),
     )
     with get_csv_file().open() as file:
-        reader = csv.DictReader(file, delimiter=",")
+        fieldnames = [
+            "Timestamp",
+            "From Bank",
+            "From Account",
+            "To Bank",
+            "To Account",
+            "Amount Received",
+            "Receiving Currency",
+            "Amount Paid",
+            "Payment Currency",
+            "Payment Format",
+            "Is Laundering",
+        ]
+        reader = csv.DictReader(file, delimiter=",", fieldnames=fieldnames)
+        next(reader, None)
         for row in reader:
             produce_event(producer, row)
 

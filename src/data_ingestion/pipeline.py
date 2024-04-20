@@ -12,9 +12,9 @@ def parse_aml_raw_stream(df):
     return (
         json_df.select([col(x).alias(x.replace(" ", "")) for x in json_df.columns])
         .withColumn("Timestamp", to_timestamp(col("Timestamp"), "yyyy/MM/dd HH:mm"))
-        .withColumn("IsLaundering", col("IsLaundering").cast("boolean"))
         .withColumn("FromBank", col("FromBank").cast("int"))
         .withColumn("ToBank", col("ToBank").cast("int"))
         .withColumn("AmountReceived", col("AmountReceived").cast(DecimalType(15, 2)))
         .withColumn("AmountPaid", col("AmountPaid").cast(DecimalType(15, 2)))
+        .withColumn("IsLaundering", col("IsLaundering").cast("boolean"))
     )
