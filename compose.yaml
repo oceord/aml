@@ -28,7 +28,7 @@ services:
         condition: service_healthy
 
   hadoop_namenode:
-    profiles: [ "data_output", "dep", "all" ]
+    profiles: [ "hdfs", "data_output", "dep", "all" ]
     container_name: aml_hadoop_namenode
     image: apache/hadoop:3
     network_mode: host
@@ -38,7 +38,7 @@ services:
     environment:
       ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
   hadoop_datanode:
-    profiles: [ "data_output", "dep", "all" ]
+    profiles: [ "hdfs", "data_output", "dep", "all" ]
     container_name: aml_hadoop_datanode
     image: apache/hadoop:3
     network_mode: host
@@ -46,7 +46,7 @@ services:
     env_file:
       - ./configs/hadoop-config.env
   hadoop_resourcemanager:
-    profiles: [ "data_output", "dep", "all" ]
+    profiles: [ "hdfs", "data_output", "dep", "all" ]
     container_name: aml_hadoop_resourcemanager
     image: apache/hadoop:3
     network_mode: host
@@ -54,7 +54,7 @@ services:
     env_file:
       - ./configs/hadoop-config.env
   hadoop_nodemanager:
-    profiles: [ "data_output", "dep", "all" ]
+    profiles: [ "hdfs", "data_output", "dep", "all" ]
     container_name: aml_hadoop_nodemanager
     image: apache/hadoop:3
     network_mode: host
@@ -63,18 +63,18 @@ services:
       - ./configs/hadoop-config.env
 
   db:
-    profiles: [ "data_output", "dep", "all" ]
+    profiles: [ "db", "data_output", "dep", "all" ]
     container_name: aml_db
     image: postgres
     network_mode: host
     restart: always
     shm_size: 128mb
     environment:
-      POSTGRES_PASSWORD: foo
+      POSTGRES_PASSWORD: postgres
     depends_on:
       - db_adminer
   db_adminer:
-    profiles: [ "data_output", "dep", "all" ]
+    profiles: [ "db", "data_output", "dep", "all" ]
     container_name: aml_db_adminer
     image: adminer
     network_mode: host
