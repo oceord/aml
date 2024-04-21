@@ -7,7 +7,9 @@ name = "pypi"
 
 [dev-packages]
 build = "*"
+ipykernel = "*"
 kafka-python = "*"
+pandas = "*"
 pyspark = "3.5.1"
 
 [requires]
