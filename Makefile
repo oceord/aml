@@ -70,8 +70,7 @@ kafka-list-topic-msgs: ## List all messages broadcasted to "financial-transactio
 	@docker exec aml_kafka \
 		/opt/kafka/bin/kafka-console-consumer.sh \
 		--bootstrap-server localhost:9092 \
-		--topic financial-transaction \
-		--from-beginning
+		--topic financial-transaction
 
 kafka-send-topic-msg: ## Send a message to "financial-transaction" topic directly in Kafka service
 	@echo "foo" |
