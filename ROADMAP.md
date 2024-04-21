@@ -13,7 +13,7 @@
 - [ ] Data ingestion through Spark
   - [x] Extract from Kafka stream
   - [x] Load raw data to Hadoop
-  - [ ] Transform and Load Fact and Dimension tables to PostgreSQL
+  - [x] Transform and Load Fact tables to PostgreSQL
   - [ ] Validate data with Great Expectations
 - [ ] Money laundering detection
   - [ ] [Realistic Synthetic Financial Transactions for Anti-Money Laundering Models](https://arxiv.org/pdf/2306.16424.pdf)
