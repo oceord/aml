@@ -47,10 +47,15 @@ def produce_event(producer, row):
 
 
 def get_csv_file():
-    for file in DATA_DIR.iterdir():
-        if file.is_file() and str(file).endswith(".csv"):
-            return file
-    return None
+    # NOTE: CSVs are sorted because they contain large daily discrepancies between rows,
+    #   which is not expected in this project of a real-time AML detection system
+    #   (only hourly discrepancies are expected)
+    csv_files = [
+        file
+        for file in DATA_DIR.iterdir()
+        if file.is_file() and str(file).endswith(".csv")
+    ]
+    return sorted(csv_files, key=lambda f: "sorted" in f.name.lower(), reverse=True)[0]
 
 
 if __name__ == "__main__":
