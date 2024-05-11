@@ -5,6 +5,7 @@ from pathlib import Path
 from time import sleep
 
 from kafka import KafkaProducer
+from kafka.admin import KafkaAdminClient, NewTopic
 
 SCRIPT_DIR = Path(__file__).parent
 
@@ -58,5 +59,21 @@ def get_csv_file():
     return sorted(csv_files, key=lambda f: "sorted" in f.name.lower(), reverse=True)[0]
 
 
+def create_topic():
+    admin_client = KafkaAdminClient(bootstrap_servers=KAFKA_SERVER)
+    admin_client.create_topics(
+        new_topics=[
+            NewTopic(
+                name=TOPIC,
+                num_partitions=1,
+                replication_factor=1,
+            ),
+        ],
+        validate_only=False,
+    )
+
+
 if __name__ == "__main__":
+    create_topic()
+    sleep(60)
     produce_events()
