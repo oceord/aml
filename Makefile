@@ -5,14 +5,14 @@
 
 help: # Show this help menu
 	$(info Available make commands:)
-	@grep -e '^[a-z|_|-]*:.* ##' $(MAKEFILE_LIST) | \
-		sort | \
+	@grep -e '^[a-z|_|-]*:.* ##' $(MAKEFILE_LIST) |\
+		sort |\
 		awk 'BEGIN {FS=":.* ## "}; {printf "\t%-23s %s\n", $$1, $$2};'
 
 .print-phony:
 	@echo "\n.PHONY: "
-	@grep -e '^[a-z|_|-]*:.* ##' $(MAKEFILE_LIST) | \
-		sort | \
+	@grep -e '^[a-z|_|-]*:.* ##' $(MAKEFILE_LIST) |\
+		sort |\
 		awk 'BEGIN {FS=":.* ## "}; {printf "%s ", $$1};'
 	@echo "\n"
 
@@ -52,7 +52,7 @@ d-fix-hdfs-permissions: ## Change permission of HDFS to allow anyone to write to
 dcomp-down: ## Stop all services
 	@docker-compose stop -t 0
 
-####### COMMANDS - UTILITIES #######################################################################
+####### COMMANDS - UTILITIES - KAFKA #######################################################################
 
 kafka-create-topic: ## Create a "financial-transaction" topic directly in Kafka service
 	@docker exec aml_kafka \
@@ -75,12 +75,14 @@ kafka-list-topic-msgs: ## List all messages broadcasted to "financial-transactio
 		--topic financial-transaction
 
 kafka-send-topic-msg: ## Send a message to "financial-transaction" topic directly in Kafka service
-	@echo "foo" |
+	@echo "foo" |\
 		docker exec -i aml_kafka \
 			/opt/kafka/bin/kafka-console-producer.sh \
 			--broker-list localhost:9092 \
 			--topic financial-transaction \
 			-
+
+####### COMMANDS - UTILITIES - HDFS #######################################################################
 
 hdfs-ls-raw-json: ## List files in hdfs://localhost/aml/raw/events/json
 	@docker exec aml_hadoop_datanode hdfs dfs -ls /aml/raw/events/json
@@ -92,3 +94,11 @@ hdfs-cat-raw-json: ## Cat json files in hdfs://localhost/aml/raw/events/json
 
 hdfs-rm-aml: ## Remote hdfs://localhost/aml directory
 	@hdfs dfs -rm -r -f /aml
+
+####### COMMANDS - UTILITIES - HADOOP #######################################################################
+
+hadoop-test-account_total_in: ## Test Hadoop job locally
+	@cat data/hadoop_test_data/part.json |\
+		src/playground/hadoop/account_total_in_map.py |\
+		sort |\
+		src/playground/hadoop/account_total_in_reduce.py

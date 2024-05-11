@@ -25,3 +25,7 @@
 
 - [ ] Use a Spark cluster to process data
 - [ ] Apply MapReduce with Hadoop
+  - [x] Total inbound transaction money by account
+  - [ ] Total outbound transaction money by account
+  - [ ] Total inbound transaction money by bank
+  - [ ] Total outbound transaction money by bank
