@@ -21,6 +21,7 @@
   - [ ] Detect money laundering through [Multi-GNN](https://github.com/IBM/Multi-GNN)
 - [ ] Real-time money laundering detection
 
-- Playground
-  - [ ] Use a Spark cluster to process data
-  - [ ] Apply MapReduce with Hadoop
+## Playground
+
+- [ ] Use a Spark cluster to process data
+- [ ] Apply MapReduce with Hadoop
