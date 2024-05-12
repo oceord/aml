@@ -85,7 +85,7 @@ kafka-send-topic-msg: ## Send a message to "financial-transaction" topic directl
 ####### COMMANDS - UTILITIES - HDFS #######################################################################
 
 hdfs-ls-raw-json: ## List files in hdfs://localhost/aml/raw/events/json
-	@docker exec aml_hadoop_namenode hdfs dfs -ls /aml/raw/events/json
+	@docker exec aml_hadoop_namenode hdfs dfs -ls -h /aml/raw/events/json
 
 hdfs-cat-raw-json: ## Cat json files in hdfs://localhost/aml/raw/events/json
 	@docker exec aml_hadoop_namenode \
