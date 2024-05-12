@@ -7,7 +7,10 @@ import sys
 def mapper():
     for line in sys.stdin:
         data_item = json.loads(line)
-        print(f"{data_item.get("To_Bank")}+{data_item.get("To_Account")};{data_item.get("Amount_Received")}")
+        print(
+            f"{data_item['To_Bank']}+{data_item['To_Account']};"
+            + str(data_item["Amount_Received"]),
+        )
 
 
 if __name__ == "__main__":
