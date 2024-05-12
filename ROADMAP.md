@@ -27,5 +27,5 @@
 - [ ] Apply MapReduce with Hadoop
   - [x] Total inbound transaction money by account
   - [x] Total outbound transaction money by account
-  - [ ] Total inbound transaction money by bank
-  - [ ] Total outbound transaction money by bank
+  - [x] Total inbound transaction money by bank
+  - [x] Total outbound transaction money by bank
