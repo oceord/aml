@@ -85,26 +85,75 @@ kafka-send-topic-msg: ## Send a message to "financial-transaction" topic directl
 ####### COMMANDS - UTILITIES - HDFS #######################################################################
 
 hdfs-ls-raw-json: ## List files in hdfs://localhost/aml/raw/events/json
-	@docker exec aml_hadoop_datanode hdfs dfs -ls /aml/raw/events/json
+	@docker exec aml_hadoop_namenode hdfs dfs -ls /aml/raw/events/json
 
 hdfs-cat-raw-json: ## Cat json files in hdfs://localhost/aml/raw/events/json
-	@docker exec aml_hadoop_datanode \
+	@docker exec aml_hadoop_namenode \
 		hdfs dfs -cat \
-		$$(docker exec aml_hadoop_datanode hdfs dfs -ls /aml/raw/events/json | grep '\.json$$' | awk '{print $$8}')
+		$$(docker exec aml_hadoop_namenode hdfs dfs -ls /aml/raw/events/json | grep '\.json$$' | awk '{print $$8}')
 
 hdfs-rm-aml: ## Remote hdfs://localhost/aml directory
 	@hdfs dfs -rm -r -f /aml
 
 ####### COMMANDS - UTILITIES - HADOOP #######################################################################
 
-hadoop-test-account_total_in: ## Test Hadoop job locally
+hadoop-setup-python3: ## Copy scripts to hadoop
+	@if [ -z "$(shell docker exec aml_hadoop_namenode command -v python3 2>/dev/null)" ]; then \
+		docker exec aml_hadoop_namenode sudo yum check-update --assumeno || true; \
+		docker exec aml_hadoop_namenode sudo yum install -y python3; \
+		docker exec aml_hadoop_namenode sudo yum clean all; \
+	fi
+	@if [ -z "$(shell docker exec aml_hadoop_datanode command -v python3 2>/dev/null)" ]; then \
+		docker exec aml_hadoop_datanode sudo yum check-update --assumeno || true; \
+		docker exec aml_hadoop_datanode sudo yum install -y python3; \
+		docker exec aml_hadoop_datanode sudo yum clean all; \
+	fi
+	@if [ -z "$(shell docker exec aml_hadoop_resourcemanager command -v python3 2>/dev/null)" ]; then \
+		docker exec aml_hadoop_resourcemanager sudo yum check-update --assumeno || true; \
+		docker exec aml_hadoop_resourcemanager sudo yum install -y python3; \
+		docker exec aml_hadoop_resourcemanager sudo yum clean all; \
+	fi
+	@if [ -z "$(shell docker exec aml_hadoop_nodemanager command -v python3 2>/dev/null)" ]; then \
+		docker exec aml_hadoop_nodemanager sudo yum check-update --assumeno || true; \
+		docker exec aml_hadoop_nodemanager sudo yum install -y python3; \
+		docker exec aml_hadoop_nodemanager sudo yum clean all; \
+	fi
+
+hadoop-copy-scripts: ## Copy scripts to hadoop
+	@docker exec aml_hadoop_namenode sudo rm -rf /aml/scripts
+	@docker exec aml_hadoop_namenode sudo mkdir -p /aml/scripts
+	@docker cp ${HOME}/Dev/aml/src/playground/hadoop/. aml_hadoop_namenode:/aml/scripts
+
+hadoop-test-account_total_in: ## Test hadoop job locally
 	@cat data/hadoop_test_data/part.json |\
 		src/playground/hadoop/account_total_in_map.py |\
 		sort |\
 		src/playground/hadoop/account_total_in_reduce.py
 
-hadoop-test-account_total_out: ## Test Hadoop job locally
+hadoop-test-account_total_out: ## Test hadoop job locally
 	@cat data/hadoop_test_data/part.json |\
 		src/playground/hadoop/account_total_out_map.py |\
 		sort |\
 		src/playground/hadoop/account_total_out_reduce.py
+
+hadoop-submit-account_total_in: hadoop-setup-python3 hadoop-copy-scripts ## Copy scripts to hadoop
+	@docker exec aml_hadoop_namenode hdfs dfs -rm -f -r /aml/out/account_total_in
+	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/account_total_in_map.py,/aml/scripts/account_total_in_reduce.py \
+		-input /aml/raw/events/json/part-00000-fffd96e9-170f-427c-8e23-210cff51067e-c000.json \
+		-output /aml/out/account_total_in \
+		-mapper account_total_in_map.py \
+		-reducer account_total_in_reduce.py
+
+hdfs-cat-out-account_total_in: ## Echo output
+	@docker exec aml_hadoop_namenode hdfs dfs -cat /aml/out/account_total_in/part-00000
+
+hadoop-submit-account_total_out: hadoop-setup-python3 hadoop-copy-scripts ## Copy scripts to hadoop
+	@docker exec aml_hadoop_namenode hdfs dfs -rm -f -r /aml/out/account_total_out
+	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/account_total_out_map.py,/aml/scripts/account_total_out_reduce.py \
+		-input /aml/raw/events/json/part-00000-fffd96e9-170f-427c-8e23-210cff51067e-c000.json \
+		-output /aml/out/account_total_out \
+		-mapper account_total_out_map.py \
+		-reducer account_total_out_reduce.py
+
+hdfs-cat-out-account_total_out: ## Echo output
+	@docker exec aml_hadoop_namenode hdfs dfs -cat /aml/out/account_total_out/part-00000
