@@ -128,32 +128,32 @@ hadoop-test-account_total_in: ## Test hadoop job locally
 	@cat data/hadoop_test_data/part.json |\
 		src/playground/hadoop/account_total_in_map.py |\
 		sort |\
-		src/playground/hadoop/account_total_in_reduce.py
+		src/playground/hadoop/account_total_reduce.py
 
 hadoop-test-account_total_out: ## Test hadoop job locally
 	@cat data/hadoop_test_data/part.json |\
 		src/playground/hadoop/account_total_out_map.py |\
 		sort |\
-		src/playground/hadoop/account_total_out_reduce.py
+		src/playground/hadoop/account_total_reduce.py
 
 hadoop-submit-account_total_in: hadoop-setup-python3 hadoop-copy-scripts ## Copy scripts to hadoop
 	@docker exec aml_hadoop_namenode hdfs dfs -rm -f -r /aml/out/account_total_in
-	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/account_total_in_map.py,/aml/scripts/account_total_in_reduce.py \
+	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/account_total_in_map.py,/aml/scripts/account_total_reduce.py \
 		-input /aml/raw/events/json/part-00000-fffd96e9-170f-427c-8e23-210cff51067e-c000.json \
 		-output /aml/out/account_total_in \
 		-mapper account_total_in_map.py \
-		-reducer account_total_in_reduce.py
+		-reducer account_total_reduce.py
 
 hdfs-cat-out-account_total_in: ## Echo output
 	@docker exec aml_hadoop_namenode hdfs dfs -cat /aml/out/account_total_in/part-00000
 
 hadoop-submit-account_total_out: hadoop-setup-python3 hadoop-copy-scripts ## Copy scripts to hadoop
 	@docker exec aml_hadoop_namenode hdfs dfs -rm -f -r /aml/out/account_total_out
-	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/account_total_out_map.py,/aml/scripts/account_total_out_reduce.py \
+	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/account_total_out_map.py,/aml/scripts/account_total_reduce.py \
 		-input /aml/raw/events/json/part-00000-fffd96e9-170f-427c-8e23-210cff51067e-c000.json \
 		-output /aml/out/account_total_out \
 		-mapper account_total_out_map.py \
-		-reducer account_total_out_reduce.py
+		-reducer account_total_reduce.py
 
 hdfs-cat-out-account_total_out: ## Echo output
 	@docker exec aml_hadoop_namenode hdfs dfs -cat /aml/out/account_total_out/part-00000
