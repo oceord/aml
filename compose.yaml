@@ -35,8 +35,8 @@ services:
     command: [ "hdfs", "namenode" ]
     env_file:
       - ./configs/hadoop-config.env
-    environment:
-      ENSURE_NAMENODE_DIR: "/tmp/hadoop-root/dfs/name"
+    volumes:
+      - shared_hadoop_data:/shared/hadoop
   hadoop_datanode:
     profiles: [ "hdfs", "data_output", "dep", "all" ]
     container_name: aml_hadoop_datanode
@@ -45,6 +45,8 @@ services:
     command: [ "hdfs", "datanode" ]
     env_file:
       - ./configs/hadoop-config.env
+    volumes:
+      - shared_hadoop_data:/shared/hadoop
   hadoop_resourcemanager:
     profiles: [ "hdfs", "data_output", "dep", "all" ]
     container_name: aml_hadoop_resourcemanager
@@ -79,3 +81,6 @@ services:
     image: adminer
     network_mode: host
     restart: always
+
+volumes:
+  shared_hadoop_data:
