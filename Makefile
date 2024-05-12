@@ -102,3 +102,9 @@ hadoop-test-account_total_in: ## Test Hadoop job locally
 		src/playground/hadoop/account_total_in_map.py |\
 		sort |\
 		src/playground/hadoop/account_total_in_reduce.py
+
+hadoop-test-account_total_out: ## Test Hadoop job locally
+	@cat data/hadoop_test_data/part.json |\
+		src/playground/hadoop/account_total_out_map.py |\
+		sort |\
+		src/playground/hadoop/account_total_out_reduce.py
