@@ -49,6 +49,9 @@ dcomp-up-data-output: ## Start data_output services
 d-fix-hdfs-permissions: ## Change permission of HDFS to allow anyone to write to it
 	@docker exec aml_hadoop_namenode hadoop fs -chmod -R 777 /
 
+dcomp-stop-data-feed: ## Stop data feed
+	@docker-compose stop data_feed kafka
+
 dcomp-down: ## Stop all services
 	@docker-compose stop -t 0
 
@@ -154,10 +157,10 @@ hadoop-test-bank_total_out: ## Test hadoop job locally
 		sort |\
 		src/playground/hadoop/total_reduce.py
 
-hadoop-submit-account_total_in: hadoop-setup-python3 hadoop-copy-scripts ## Copy scripts to hadoop
+hadoop-submit-account_total_in: hadoop-setup-python3 hadoop-copy-scripts ## Submit account_total_in
 	@docker exec aml_hadoop_namenode hdfs dfs -rm -f -r /aml/out/account_total_in
 	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/account_total_in_map.py,/aml/scripts/total_reduce.py \
-		-input /aml/raw/events/json/part-00000-fffd96e9-170f-427c-8e23-210cff51067e-c000.json \
+		-input /aml/raw/events/json \
 		-output /aml/out/account_total_in \
 		-mapper account_total_in_map.py \
 		-reducer total_reduce.py
@@ -165,7 +168,7 @@ hadoop-submit-account_total_in: hadoop-setup-python3 hadoop-copy-scripts ## Copy
 hdfs-cat-out-account_total_in: ## Echo output
 	@docker exec aml_hadoop_namenode hdfs dfs -cat /aml/out/account_total_in/part-00000
 
-hadoop-submit-account_total_out: hadoop-setup-python3 hadoop-copy-scripts ## Copy scripts to hadoop
+hadoop-submit-account_total_out: hadoop-setup-python3 hadoop-copy-scripts ## Submit account_total_out
 	@docker exec aml_hadoop_namenode hdfs dfs -rm -f -r /aml/out/account_total_out
 	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/account_total_out_map.py,/aml/scripts/total_reduce.py \
 		-input /aml/raw/events/json/part-00000-fffd96e9-170f-427c-8e23-210cff51067e-c000.json \
@@ -176,7 +179,7 @@ hadoop-submit-account_total_out: hadoop-setup-python3 hadoop-copy-scripts ## Cop
 hdfs-cat-out-account_total_out: ## Echo output
 	@docker exec aml_hadoop_namenode hdfs dfs -cat /aml/out/account_total_out/part-00000
 
-hadoop-submit-bank_total_in: hadoop-setup-python3 hadoop-copy-scripts ## Copy scripts to hadoop
+hadoop-submit-bank_total_in: hadoop-setup-python3 hadoop-copy-scripts ## Submit bank_total_in
 	@docker exec aml_hadoop_namenode hdfs dfs -rm -f -r /aml/out/bank_total_in
 	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/bank_total_map.py,/aml/scripts/total_reduce.py \
 		-input /aml/out/account_total_in/part-00000 \
@@ -187,7 +190,7 @@ hadoop-submit-bank_total_in: hadoop-setup-python3 hadoop-copy-scripts ## Copy sc
 hdfs-cat-out-bank_total_in: ## Echo output
 	@docker exec aml_hadoop_namenode hdfs dfs -cat /aml/out/bank_total_in/part-00000
 
-hadoop-submit-bank_total_out: hadoop-setup-python3 hadoop-copy-scripts ## Copy scripts to hadoop
+hadoop-submit-bank_total_out: hadoop-setup-python3 hadoop-copy-scripts ## Submit bank_total_out
 	@docker exec aml_hadoop_namenode hdfs dfs -rm -f -r /aml/out/bank_total_out
 	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/bank_total_map.py,/aml/scripts/total_reduce.py \
 		-input /aml/out/account_total_out/part-00000 \
