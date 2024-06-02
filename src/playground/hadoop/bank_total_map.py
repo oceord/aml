@@ -5,8 +5,8 @@ import sys
 
 def mapper():
     for line in sys.stdin:
-        bank, _, amount_received = line.strip().replace("+", "\t").split("\t")
-        print(f"{bank}\t{amount_received}")
+        bank, _, amount = line.strip().replace("+", "\t").split("\t")
+        print(f"{bank}\t{amount}")
 
 
 if __name__ == "__main__":

@@ -15,6 +15,8 @@ def reducer():
                 print(f"{current_bank_account}\t{total_received}")
             current_bank_account = bank_account
             total_received = float(amount_received)
+    if current_bank_account is not None:
+        print(f"{current_bank_account}\t{total_received}")
 
 
 if __name__ == "__main__":
