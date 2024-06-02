@@ -171,7 +171,7 @@ hdfs-cat-out-account_total_in: ## Echo output
 hadoop-submit-account_total_out: hadoop-setup-python3 hadoop-copy-scripts ## Submit account_total_out
 	@docker exec aml_hadoop_namenode hdfs dfs -rm -f -r /aml/out/account_total_out
 	@docker exec aml_hadoop_namenode mapred streaming -files /aml/scripts/account_total_out_map.py,/aml/scripts/total_reduce.py \
-		-input /aml/raw/events/json/part-00000-fffd96e9-170f-427c-8e23-210cff51067e-c000.json \
+		-input /aml/raw/events/json \
 		-output /aml/out/account_total_out \
 		-mapper account_total_out_map.py \
 		-reducer total_reduce.py
