@@ -23,9 +23,15 @@
 
 ## Playground
 
-- [ ] Use a Spark cluster to process data
-- [ ] Apply MapReduce with Hadoop
+- [x] Apply MapReduce with Hadoop
   - [x] Total inbound transaction money by account
   - [x] Total outbound transaction money by account
   - [x] Total inbound transaction money by bank
   - [x] Total outbound transaction money by bank
+- [x] Apply MapReduce with Spark
+  - [x] Total inbound transaction money by account
+  - [x] Total outbound transaction money by account
+  - [x] Total inbound transaction money by bank
+  - [x] Total outbound transaction money by bank
+  - [ ] Convert all currencies to EUR
+- [ ] Use a Spark cluster to process data
