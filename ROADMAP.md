@@ -10,11 +10,11 @@
   - [ ] Spark
 - [x] Kafka feed
   - [x] Stream data from the [IBM Transactions for AML](https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml) dataset
-- [ ] Data ingestion through Spark
+- [x] Data ingestion through Spark
   - [x] Extract from Kafka stream
   - [x] Load raw data to Hadoop
   - [x] Transform and Load Fact tables to PostgreSQL
-  - [ ] Validate data with Great Expectations
+  - [x] Validate data with Great Expectations
 - [ ] Money laundering detection
   - [ ] [Realistic Synthetic Financial Transactions for Anti-Money Laundering Models](https://arxiv.org/pdf/2306.16424.pdf)
   - [ ] [Provably Powerful Graph Neural Networks for Directed Multigraphs](https://arxiv.org/pdf/2306.11586.pdf)

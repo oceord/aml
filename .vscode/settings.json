@@ -25,6 +25,7 @@
     "cSpell.words": [
         "CHECKP",
         "dataframe",
+        "datasources",
         "hdfs",
         "jdbc",
         "pyspark"
