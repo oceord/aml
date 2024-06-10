@@ -1,3 +1,4 @@
+import contextlib
 import csv
 import json
 import os
@@ -56,21 +57,26 @@ def get_csv_file():
         for file in DATA_DIR.iterdir()
         if file.is_file() and str(file).endswith(".csv")
     ]
-    return sorted(csv_files, key=lambda f: "sorted" in f.name.lower(), reverse=True)[0]
+    return sorted(
+        csv_files,
+        key=lambda f: ("test" in f.name.lower(), "sorted" in f.name.lower()),
+        reverse=True,
+    )[0]
 
 
 def create_topic():
     admin_client = KafkaAdminClient(bootstrap_servers=KAFKA_SERVER)
-    admin_client.create_topics(
-        new_topics=[
-            NewTopic(
-                name=TOPIC,
-                num_partitions=1,
-                replication_factor=1,
-            ),
-        ],
-        validate_only=False,
-    )
+    with contextlib.suppress(Exception):
+        admin_client.create_topics(
+            new_topics=[
+                NewTopic(
+                    name=TOPIC,
+                    num_partitions=1,
+                    replication_factor=1,
+                ),
+            ],
+            validate_only=False,
+        )
 
 
 if __name__ == "__main__":
